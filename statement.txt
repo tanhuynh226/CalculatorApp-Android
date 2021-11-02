@@ -1,0 +1,11 @@
+https://www.youtube.com/watch?v=B5b-7uDtUp4
+https://www.youtube.com/watch?v=VE6ExebUMTA
+https://www.youtube.com/watch?v=KFEtd7imXaI
+https://www.youtube.com/watch?v=kqmSUwRZ6kg
+https://stackoverflow.com/questions/19932793/syncing-android-studio-project-with-gradle-files
+https://stackoverflow.com/questions/36633327/textview-setshowsoftinputonfocus-equivalent-before-sdk-21
+https://stackoverflow.com/questions/67412084/manifest-merger-failed-apps-targeting-android-12-android-studio-error
+https://stackoverflow.com/questions/24880388/cannot-lower-case-button-text-in-android-studio
+https://developer.android.com/studio/debug
+https://www.geeksforgeeks.org/how-to-create-landscape-layout-in-android-studio/
+https://www.youtube.com/watch?v=rerpAyXXOFM
