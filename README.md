@@ -15,5 +15,5 @@
 <p align="center"><img src="https://i.imgur.com/d9sN7Ps.png"></p>
 
 ### Landscape:
-<p align="center"><img src="https://i.imgur.com/jCjMYpM.png"></p>
+<p align="center"><img src="https://i.imgur.com/nkYj2f3.png"></p>
 
