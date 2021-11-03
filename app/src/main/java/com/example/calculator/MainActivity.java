@@ -1,8 +1,6 @@
 package com.example.calculator;
 
-import android.os.Build;
 import android.widget.TextView;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +9,7 @@ public class MainActivity extends AppCompatActivity {
     // Instance variables
     private TextView display;
     private String currStr;
-    private int i = 0, j = 0;
+    private int i = 0, j = 0, error;
 
     // Calculator object declaration
     Calculator calc = new Calculator();
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         currStr = oldStr + newStr;
         // Overflow error handling
         if (display.getText().toString().length() > 13){
-            display.setText("ERROR: Overflow");
+            display.setText(R.string.overflow);
             return;
         }
         display.setText(currStr);
@@ -46,71 +44,8 @@ public class MainActivity extends AppCompatActivity {
             calc.setLastNum(Double.parseDouble(currStr)); // first input becomes the latest input stored in the calculator object
     }
 
-    // Resets calculator
-    public void clearButton(View view){
-        display.setText("0");
-        calc.clear();
-        i = 0;
-        j = 0;
-    }
-
-    // Addition function
-    public void addButton(View view){
-        calc.setOperator(1);
-        if (j > 0) {
-            calc.add(Double.parseDouble(currStr));
-            display.setText(calc.getResult());
-            calc.setLastNum(Double.parseDouble(calc.getResult()));
-        }
-        i = 0;              // i = 0 resets TextView to allow user to write over it
-        j++;
-    }
-
-    // Subtraction function
-    public void subtractButton(View view){
-        calc.setOperator(2);
-        if (j > 0) {
-            calc.subtract(Double.parseDouble(currStr));
-            display.setText(calc.getResult());
-            calc.setLastNum(Double.parseDouble(calc.getResult()));
-        }
-        i = 0;
-        j++;
-    }
-
-    // Multiplication function
-    public void multiplyButton(View view){
-        calc.setOperator(3);
-        if (j > 0) {
-            calc.multiply(Double.parseDouble(currStr));
-            display.setText(calc.getResult());
-            calc.setLastNum(Double.parseDouble(calc.getResult()));
-        }
-        i = 0;
-        j++;
-    }
-
-    // Division function
-    public void divideButton(View view){
-        calc.setOperator(4);
-
-        // Divide by zero error handling
-        if (currStr.equals("0")) {
-            display.setText("ERROR: Divide by Zero");
-            return;
-        }
-
-        if (j > 0) {
-            calc.divide(Double.parseDouble(currStr));
-            display.setText(calc.getResult());
-            calc.setLastNum(Double.parseDouble(calc.getResult()));
-        }
-        i = 0;
-        j++;
-    }
-
-    // Equals Function
-    public void equalsButton(View view){
+    // Performs queued operation
+    private int equals(){
         if (j > 0) {
             switch (calc.getOperator()) {
                 case 1:
@@ -133,21 +68,109 @@ public class MainActivity extends AppCompatActivity {
 
         // Divide by zero error handling
         if (calc.getOperator() == 4 && currStr.equals("0")){
-            display.setText("ERROR: Divide by Zero");
-            return;
+            display.setText(R.string.dividebyzero);
+            return 1;
         }
         // Overflow error handling
         else if (display.getText().toString().length() > 13){
-            display.setText("ERROR: Overflow");
-            return;
+            display.setText(R.string.overflow);
+            return 2;
         }
         // No operations performed on initial value
         else if (calc.getOperator() == 0)
+            return 3;
+        // If there are no errors
+        return 0;
+    }
+
+    // Resets calculator
+    public void clearButton(View view){
+        display.setText("0");
+        calc.clear();
+        i = 0;
+        j = 0;
+    }
+
+    // Addition function
+    public void addButton(View view){
+        if (j > 0 && calc.getOperator() == 1) {
+            calc.add(Double.parseDouble(currStr));
+            display.setText(calc.getResult());
+            calc.setLastNum(Double.parseDouble(calc.getResult()));
+        }
+        else if (j > 0 && calc.getOperator() != 1) {
+            error = equals();
+            if (error == 0)
+                display.setText(calc.getResult());
+        }
+        calc.setOperator(1);
+        i = 0;              // i = 0 resets TextView to allow user to write over it
+        j++;
+    }
+
+    // Subtraction function
+    public void subtractButton(View view){
+        if (j > 0 && calc.getOperator() == 2) {
+            calc.subtract(Double.parseDouble(currStr));
+            display.setText(calc.getResult());
+            calc.setLastNum(Double.parseDouble(calc.getResult()));
+        }
+        else if (j > 0 && calc.getOperator() != 2) {
+            error = equals();
+            if (error == 0)
+                display.setText(calc.getResult());
+        }
+        calc.setOperator(2);
+        i = 0;
+        j++;
+    }
+
+    // Multiplication function
+    public void multiplyButton(View view){
+        if (j > 0 && calc.getOperator() == 3) {
+            calc.multiply(Double.parseDouble(currStr));
+            display.setText(calc.getResult());
+            calc.setLastNum(Double.parseDouble(calc.getResult()));
+        }
+        else if (j > 0 && calc.getOperator() != 3) {
+            error = equals();
+            if (error == 0)
+                display.setText(calc.getResult());
+        }
+        calc.setOperator(3);
+        i = 0;
+        j++;
+    }
+
+    // Division function
+    public void divideButton(View view){
+        // Divide by zero error handling
+        if (currStr.equals("0")) {
+            display.setText(R.string.dividebyzero);
             return;
+        }
 
+        if (j > 0 && calc.getOperator() == 4) {
+            calc.divide(Double.parseDouble(currStr));
+            display.setText(calc.getResult());
+            calc.setLastNum(Double.parseDouble(calc.getResult()));
+        }
+        else if (j > 0 && calc.getOperator() != 4) {
+            error = equals();
+            if (error == 0)
+                display.setText(calc.getResult());
+        }
+        calc.setOperator(4);
+        i = 0;
+        j++;
+    }
+
+    // Equals Function
+    public void equalsButton(View view){
+        error = equals();
+        if (error == 0)
+            display.setText(calc.getResult());
         calc.setOperator(0);    // Pressing = again won't perform the operation again
-        display.setText(calc.getResult());
-
         i = 0;
         j = 0;
     }
@@ -172,12 +195,17 @@ public class MainActivity extends AppCompatActivity {
 
     // Power function
     public void powerButton(View view){
-        calc.setOperator(5);
-        if (j > 0) {
+        if (j > 0 && calc.getOperator() == 5) {
             calc.power(Double.parseDouble(currStr));
             display.setText(calc.getResult());
             calc.setLastNum(Double.parseDouble(calc.getResult()));
         }
+        else if (j > 0 && calc.getOperator() != 5) {
+            error = equals();
+            if (error == 0)
+                display.setText(calc.getResult());
+        }
+        calc.setOperator(5);
         i = 0;
         j++;
     }
@@ -186,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     public void rootButton(View view){
         currStr = display.getText().toString();
         if (currStr.contains("-")) {
-            display.setText("ERROR: Root of Negatives");
+            display.setText(R.string.rootofnegatives);
             return;
         }
         calc.root(Double.parseDouble(currStr));

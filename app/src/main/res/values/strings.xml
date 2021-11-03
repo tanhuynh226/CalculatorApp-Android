@@ -28,4 +28,7 @@
     <string name="nine">9</string>
 
     <string name="display">0</string>
+    <string name="dividebyzero">ERROR: Divide by Zero</string>
+    <string name="overflow">ERROR: Overflow</string>
+    <string name="rootofnegatives">ERROR: Root of Negatives</string>
 </resources>

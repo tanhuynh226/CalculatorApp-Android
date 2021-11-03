@@ -255,7 +255,7 @@
             tools:ignore="LabelFor"
             android:gravity="end" android:text="@string/display" android:baselineAligned="false"
             app:layout_constraintEnd_toEndOf="@+id/tableLayout" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.941"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintVertical_bias="0.100000024" app:layout_constraintBottom_toTopOf="@+id/tableLayout"
             android:layout_marginTop="5dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
